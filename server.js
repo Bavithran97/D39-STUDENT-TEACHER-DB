@@ -7,8 +7,9 @@ const Student = require("./models/students")
 app.use(express.json());
 
 app.get("/",(req,res)=>{
-   res.send("database is created for students: /students and mentors: /mentors");
+   res.send("database is created for students: /students and mentors: /mentor");
 })
+//to create mentor database
 app.post("/mentor",async (req,res)=>{
     try{
         const mentor = await Mentor.create(req.body)
@@ -17,6 +18,7 @@ app.post("/mentor",async (req,res)=>{
         res.status(404).send({message:"error"})
     }
  });
+//to create students database
  app.post("/students", async (req, res) => {
     try {
       const student = await Student.create(req.body);
@@ -25,6 +27,24 @@ app.post("/mentor",async (req,res)=>{
       res.status(404).send({ message: "error" });
     }
   });
+//TO get a data from mentor Database
+app.get("/mentor", async (req, res) => {
+  try {
+    const mentor = await Mentor.find({});
+    res.status(200).json(mentor);
+  } catch (err) {
+    res.status(500).json({ err: `The database is crashed` });
+  }
+});
+//TO get a data from students Database
+app.get("/students", async (req, res) => {
+  try {
+    const student = await Student.find({});
+    res.status(200).json(student);
+  } catch (err) {
+    res.status(500).json({ err: `The database is crashed` });
+  }
+});
    //API TO ASSIGN A STUDENT TO A MENTOR
   app.patch("/students/:studentId/assign-mentor/:mentorId", async (req, res) => {
     try {
